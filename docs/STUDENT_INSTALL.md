@@ -26,15 +26,14 @@
 在剛建立的 channel 內：
 
 1. 到 **Basic settings**，找到並暫存 **Channel secret**。本版 GAS 因平台限制不會讀取 HTTP header 驗簽，但仍應妥善保存，不要公開。
-2. 到 **Messaging API** 分頁，找到 **Channel access token** 區塊，按 **Issue** 建立 long-lived token，複製並暫存。這個值稍後會寫入 Apps Script；只會顯示一次，遺失時請重新 Issue。
-3. 同一頁將 **Auto-reply messages** 關閉，避免 LINE Official Account 的自動回覆與 Bot 回覆重複。
-4. 先不要填 Webhook URL；要等第 5 節部署 Web App 後才會有網址。
-5. 用頁面上的 QR code 把 Bot 加為 LINE 好友。先加好友，但尚未部署前不會回覆是正常的。
+2. 到 **Messaging API** 分頁，找到 **Channel access token** 區塊，優先 Issue **Channel access token v2.1** 並自行設定到期日；若你的帳號畫面沒有此選項，再使用 long-lived token。複製並暫存，這個值稍後會寫入 Apps Script。
+3. 同一頁將 **Auto-reply messages** 與 **Greeting messages** 都關閉，避免 LINE Official Account 的自動回覆／歡迎訊息與 Bot 回覆重複。
+4. 先不要填 Webhook URL，也**先不要加 Bot 好友**；要等第 5 節部署完成後，第一次加好友的 `follow` 事件才會自動認領你的 owner 身分。
 
 完成標記：
 
-- [ ] 我有自己的 long-lived Channel access token，且沒有貼到聊天群組、截圖或 GitHub。
-- [ ] 我已關閉 Auto-reply messages，並加 Bot 為好友。
+- [ ] 我有自己的 Channel access token，且沒有貼到聊天群組、截圖或 GitHub。
+- [ ] 我已關閉 Auto-reply messages 與 Greeting messages。
 
 ## 2. 建立 Gemini API key
 
@@ -83,7 +82,7 @@ clasp push
 執行：
 
 ```bash
-clasp open
+clasp open-script
 ```
 
 瀏覽器會開啟你剛建立的 Apps Script 專案。確認左側檔案清單至少包含 `Main.gs`、`Config.gs`、`Setup.gs`、`LineClient.gs` 與 `appsscript.json`。
@@ -112,6 +111,8 @@ clasp open
 2. 第一次執行會出現 Google 授權畫面。選自己的帳號，依指示允許 Drive、外部請求與排程權限。若出現「Google hasn’t verified this app」，這是你自己的 Apps Script 專案，依畫面進入 Advanced 並允許即可。
 3. 按 **Execution log**，確認有 `Created folder:` 或 `Existing folder:`，並能開啟自己的 `LineBot-Journal` Drive 資料夾。
 4. 將函式切換為 `setupSmokeTest`，按 **Run**。Execution log 應有 `Embedding dims: 768` 以及 Gemini 的回覆。
+
+若出現「找不到模型」或模型 404：在函式下拉選單執行 `listGeminiModels`，從 log 找一個支援 `generateContent` 的 `gemini-...` 名稱；回到本機的 `src/Config.gs`，把 `GENERATION: 'gemini-2.5-flash'` 改成該名稱，儲存後執行 `clasp push`，再重跑 `setupSmokeTest`。不要把 API key 放進程式碼。
 
 完成標記：
 
@@ -144,28 +145,19 @@ clasp open
 
 若 Verify 失敗，先確認網址是 `/exec`、部署存取權是 `Anyone`，再重新部署並更新 URL。詳見第 7 節。
 
-### 5.3 第一次訊息與帳號鎖定
+### 5.3 第一次加好友與自動認領 owner
 
-1. 在手機 LINE 對 Bot 傳 `哈囉`。它應回覆已記錄文字的訊息。
-2. 在 Apps Script 左側進入 **Executions**，點開剛剛的 `doPost` 執行項目，從 event log 找到自己的 `userId`（格式為 `U` 開頭的一串字元）。
-3. 不要把這個 userId 公開。回到 Apps Script 編輯器，開啟 `Setup.gs`，在下方新增一個只供自己執行的函式：
+1. 在手機 LINE 掃 Messaging API 頁面的 QR code，將 Bot 加為好友。若你在第 1 節已經加過，請先封鎖／刪除 Bot，再重新加回來，讓 LINE 重新送出 `follow` 事件。
+2. Bot 應回傳歡迎卡，並顯示「已將你設為主人（OWNER）」。這一步會自動把你的 LINE user ID 存入 Script Properties；**不需要**從 log 找 user ID，也不需要手動改程式。
+3. 再傳 `哈囉`，它應回覆已記錄文字的訊息。
 
-   ```javascript
-   function setMyOwner() {
-     setOwner('U請替換成你自己的LINEUserId');
-   }
-   ```
-
-4. 把 `U請替換成你自己的LINEUserId` 改成剛剛的值，選 `setMyOwner` 按 **Run**。
-5. 執行完後，刪除 `setMyOwner` 函式並存檔。這個動作不會刪掉已存入 Script Properties 的 owner 設定。
-
-> 為何要鎖定 owner？你的 Bot 有 API 使用成本與私人學習資料；鎖定後，陌生人無法任意使用你的私訊 Bot。
+> 為何要鎖定 owner？你的 Bot 有 API 使用成本與私人學習資料；第一個在 webhook 啟用後加好友的人會成為 owner。請在課堂中只讓學生用自己的 Bot 掃碼，不要先讓其他人加好友。
 
 完成標記：
 
 - [ ] LINE Webhook Verify 成功，Use webhook 為 ON。
 - [ ] Bot 對我傳的 `哈囉` 有回應。
-- [ ] 我已設定自己的 owner userId，並刪除臨時函式。
+- [ ] 歡迎卡顯示我已被設為 OWNER。
 
 ## 6. 完成驗收
 
@@ -185,13 +177,15 @@ clasp open
 | 現象 | 先檢查 |
 | --- | --- |
 | `clasp: command not found` | Node.js 是否已安裝；重開終端機；或改用 `npx @google/clasp ...`。 |
+| `Unknown command "clasp open"` | 使用現行指令 `clasp open-script`。 |
 | `clasp push` 失敗 | 確認自己位於 repository 根目錄、已 `clasp login`，且 `.clasp.json` 存在。 |
 | `Missing Script Property` | Key 名稱是否完全相同、沒有多餘空白；填完後再重跑函式。 |
-| `setupSmokeTest` 出現 403／模型錯誤 | API key 是否有效；到 AI Studio 確認 key 所屬專案與 API 存取；可執行 `listGeminiModels` 讀取可用模型。 |
+| `setupSmokeTest` 出現 403／模型錯誤 | API key 是否有效；到 AI Studio 確認 key 所屬專案與 API 存取；執行 `listGeminiModels`，依第 4.2 節更新 `src/Config.gs` 的模型名稱後 `clasp push`。 |
 | LINE Verify 失敗 | URL 必須以 `/exec` 結尾；Web App access 選 `Anyone`；重新部署後要更新 LINE Console 的 URL。 |
 | Bot 沒回覆 | LINE 的 Use webhook 是否 ON；Apps Script 的 Executions 是否出現 `doPost`；Script Properties 是否正確。 |
 | 媒體訊息失敗 | LINE 的媒體連結會過期，請上傳後盡快選處理方式；單檔請小於 10 MB。 |
-| 朋友也能用我的 Bot | 立即完成第 5.3 節的 owner 設定；也不要把 token 或 `/exec` URL 公開。 |
+| Bot 沒顯示 OWNER 歡迎卡 | 確認 Use webhook 已 ON；先封鎖／刪除 Bot，再掃 QR code 重新加好友。 |
+| 朋友也能用我的 Bot | 檢查自己是否先在 webhook 啟用後加入 Bot；也不要把 token 或 `/exec` URL 公開。 |
 
 ## 8. 日後更新程式
 
