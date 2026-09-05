@@ -2,7 +2,7 @@
 
 WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程的工具。它不要求你先分類、命名或填表；你的工作是記寫，系統的工作是安靜地整理。
 
-![LINE、Apps Script、Gemini 與 Drive 的資料流](../assets/architecture-flow.png)
+<a href="../assets/architecture-flow.png"><img src="../assets/architecture-flow.png" width="900" alt="LINE、Apps Script、Gemini 與 Drive 的資料流" /></a>
 
 ## 三段核心
 
@@ -23,7 +23,7 @@ WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程�
 
 兩條軸不互相取代：同一個學習主題可以跨越多個時間片段；同一段時間也可能同時包含不同主題。
 
-![主題群組的 LINE 顯示範例](../assets/themes-example.png)
+<a href="../assets/themes-example.png"><img src="../assets/themes-example.png" width="360" alt="主題群組的 LINE 顯示範例" /></a>
 
 ### 3. 脈絡生歷程
 
@@ -44,9 +44,11 @@ WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程�
 
 | 指令總覽 | 學習歷程回顧範例 |
 | --- | --- |
-| ![LINE 指令總覽](../assets/line-command-guide.png) | ![學習歷程現況](../assets/journey-report-example.png) |
+| <a href="../assets/line-command-guide.png"><img src="../assets/line-command-guide.png" width="460" alt="LINE 指令總覽" /></a> | <a href="../assets/journey-report-example.png"><img src="../assets/journey-report-example.png" width="300" alt="學習歷程現況" /></a> |
 
-![學習歷程細節範例](../assets/journey-detail-example.png)
+<a href="../assets/journey-detail-example.png"><img src="../assets/journey-detail-example.png" width="320" alt="學習歷程細節範例" /></a>
+
+<sub>所有範例圖皆可點開查看原始尺寸。</sub>
 
 ## 資料如何流動
 
