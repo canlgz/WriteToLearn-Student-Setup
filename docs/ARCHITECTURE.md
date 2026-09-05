@@ -2,6 +2,8 @@
 
 WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程的工具。它不要求你先分類、命名或填表；你的工作是記寫，系統的工作是安靜地整理。
 
+![LINE、Apps Script、Gemini 與 Drive 的資料流](../assets/architecture-flow.png)
+
 ## 三段核心
 
 ### 1. 隨手寫訊息
@@ -21,6 +23,8 @@ WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程�
 
 兩條軸不互相取代：同一個學習主題可以跨越多個時間片段；同一段時間也可能同時包含不同主題。
 
+![主題群組的 LINE 顯示範例](../assets/themes-example.png)
+
 ### 3. 脈絡生歷程
 
 不是每個短暫話題都會變成學習歷程。一個進行中脈絡必須先展現：
@@ -37,6 +41,12 @@ WriteToLearn 是一個把零碎學習記寫逐步整理為可回顧學習歷程�
 - 回頭反思自己如何學習
 
 它接著會呈現目前的發展狀態與可補強之處；目的是幫助你看見下一步，而不是替你的學習打分數。
+
+| 指令總覽 | 學習歷程回顧範例 |
+| --- | --- |
+| ![LINE 指令總覽](../assets/line-command-guide.png) | ![學習歷程現況](../assets/journey-report-example.png) |
+
+![學習歷程細節範例](../assets/journey-detail-example.png)
 
 ## 資料如何流動
 
