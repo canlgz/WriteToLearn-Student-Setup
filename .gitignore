@@ -1,0 +1,7 @@
+.clasp.json
+.clasprc.json
+.deployment-id
+node_modules/
+*.log
+.DS_Store
+_work/
