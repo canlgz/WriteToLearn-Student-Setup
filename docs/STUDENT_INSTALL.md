@@ -52,7 +52,7 @@
 1. 在本 repository 的頁面按 **Code → Download ZIP**，解壓縮到容易找到的資料夾；或用 Git clone：
 
    ```bash
-   git clone <課程提供的-repository-網址> WriteToLearn
+   git clone https://github.com/canlgz/WriteToLearn-Student-Setup.git WriteToLearn
    cd WriteToLearn
    ```
 

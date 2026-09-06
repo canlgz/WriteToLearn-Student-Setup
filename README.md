@@ -64,8 +64,17 @@ LINE 記錄          時間與語意整理       轉折偵測與回顧
 | `/portfolio` | 產出學習歷程總冊 |
 | `/help` | 在 LINE 看完整指令 |
 
+## 選配延伸：ConsciousnessBot
+
+當你的 WriteToLearn 已能穩定記寫、搜尋與形成脈絡後，才可選擇安裝
+[ConsciousnessBot](https://github.com/canlgz/ConsciousnessBot)。它是另一個常駐於自己電腦的
+Telegram 服務，只**唯讀** WriteToLearn 的 Drive 記憶層，提供背景摘要與反思互動；它不會修改
+WriteToLearn，也不是本安裝流程的必要部分。
+
+請勿嘗試把它接到 LearningBot：ConsciousnessBot 只支援 WriteToLearn 的資料結構。
+
 ## 給助教／維護者
 
 學生安裝的是一人一套、獨立擁有的服務。若需更新程式，請讓學生從自己的 clone 更新，再用 `clasp push` 與既有 deployment 更新；不要共用老師的 LINE token、Gemini key 或 Apps Script 專案。
 
-原始系統說明與技術設計在 `docs/design/`；常見 LINE 平台限制請看 [docs/LINE_GOTCHAS.md](docs/LINE_GOTCHAS.md)。
+`docs/design/`、[docs/STATUS.md](docs/STATUS.md) 與 [docs/LINE_GOTCHAS.md](docs/LINE_GOTCHAS.md) 是維護資料，不是學生必讀內容。

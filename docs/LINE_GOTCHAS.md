@@ -1,4 +1,6 @@
-# LINE Messaging API — 踩過的坑
+# LINE Messaging API — 維護紀錄
+
+> 這是維護者參考資料，不是學生安裝步驟。學生遇到問題請先查看 [學生完整安裝指南](STUDENT_INSTALL.md) 的故障排除。
 
 寫 LINE Bot 時遇到的 silent failure / 結構限制，列在這邊備忘。每一條都是實際被 LINE API 退 400 並花時間 debug 才找到的。
 
